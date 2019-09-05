@@ -21,10 +21,12 @@ export default class VaccineController {
     async create(req, res, next) {
         try {
             const params = {
-                name: req.body.name
+                name: req.body.name,
+                description: req.body.description,
+                period: req.body.period,
             };
             const vaccineRepository = new VaccineRepository();
-            const user = new Vaccine(null, params.name);
+            const user = new Vaccine(null, params.name, params.description, params.period);
             await vaccineRepository.create(user);
             return res.status(201).jsonp(user);
         } catch (e) {
@@ -56,12 +58,15 @@ export default class VaccineController {
 
         try {
             const params = {
-                name: req.body.name
+                id: req.params.id,
+                name: req.body.name,
+                description: req.body.description,
+                period: req.body.period
             };
 
             const vaccineRepository = new VaccineRepository();
 
-            const user = new Vaccine(null, params.name);
+            const user = new Vaccine(params.id, params.name, params.description, params.period);
 
             const response = await vaccineRepository.updade(user);
 
