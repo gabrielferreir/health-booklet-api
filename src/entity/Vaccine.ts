@@ -1,16 +1,16 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, PrimaryColumn} from "typeorm";
 
 @Entity()
 export class Vaccine {
 
-    constructor(id, name, description, period) {
+    constructor(id, name, description, days) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.period = period;
+        this.days = days;
     }
 
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id: number;
 
     @Column()
@@ -20,6 +20,6 @@ export class Vaccine {
     description: string;
 
     @Column()
-    period: string;
+    days: number;
 
 }
