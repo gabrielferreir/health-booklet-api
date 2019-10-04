@@ -1,7 +1,3 @@
-# Awesome Project Build with TypeORM
+# Health Booklet API
 
-Steps to run this project:
-
-1. Run `npm i` command
-2. Setup database settings inside `ormconfig.json` file
-3. Run `npm start` command
+https://documenter.getpostman.com/view/2381835/SVfWL5tL
