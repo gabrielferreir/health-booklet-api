@@ -23,6 +23,12 @@ export default class UserRepository {
         return await getManager().getRepository(User).delete(id);
     }
 
+    async signIn(email, pass): Promise<User> {
+        return await getManager().getRepository(User).findOne({
+            where: {email: email, pass: pass}
+        });
+    }
+
     async availableEmail(email: string) {
         const user = await getManager().getRepository(User).findOne({
             where: [{email: email}]
