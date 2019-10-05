@@ -4,6 +4,7 @@ import {Person} from "../entity/Person";
 import {Booklet} from "../entity/Booklet";
 import {PersonVaccine} from "../entity/PersonVaccine";
 import PersonVaccineRepository from "./personVaccine";
+import * as moment from 'moment';
 
 export default class PersonBookletRepository {
 
@@ -41,10 +42,9 @@ export default class PersonBookletRepository {
     }
 
     private addData(days) {
-        const now = new Date();
-        now.setHours(0, 0, 0, 0);
-        now.setDate(now.getDate() + days);
-        return now;
+        const date = moment().utc(false);
+        date.add(days, 'days');
+        return date.format('YYYY-MM-DD');
     }
 }
 
