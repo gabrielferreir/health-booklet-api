@@ -26,10 +26,6 @@ export default class PersonBookletRepository {
     }
 
     async create(person: Person, booklet: Booklet) {
-
-        console.log('person', person);
-        console.log('booklet', booklet);
-
         const personVaccineRepository = new PersonVaccineRepository();
 
         const personVaccine = await Promise.all(booklet.vaccines.map(async item => {
