@@ -1,16 +1,15 @@
-import {Entity, PrimaryGeneratedColumn, Column, PrimaryColumn, ManyToOne} from "typeorm";
-import {User} from "./User";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
 import {Vaccine} from "./Vaccine";
 
 @Entity()
-export class UserVaccine {
+export class PersonVaccine {
 
-    constructor(id, vaccine, date, isOkay) {
+    constructor(id, vaccine, minDate, maxDate, isOkay) {
         this.id = id;
         this.vaccine = vaccine;
-        this.date = date;
+        this.minDate = minDate;
+        this.maxDate = maxDate;
         this.isOkay = isOkay;
-
     }
 
     @PrimaryGeneratedColumn()
@@ -20,7 +19,10 @@ export class UserVaccine {
     vaccine: Vaccine;
 
     @Column()
-    date: Date;
+    minDate: Date;
+
+    @Column()
+    maxDate: Date;
 
     @Column()
     isOkay: boolean;

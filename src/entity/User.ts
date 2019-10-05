@@ -15,6 +15,10 @@ export class User {
         this.publicAgent = publicAgent;
     }
 
+    static byId(id) {
+        return new User(id, null, null, null, null, null, null, null, null);
+    }
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -41,13 +45,5 @@ export class User {
 
     @Column()
     publicAgent: boolean;
-
-    // @OneToOne(() => Photo)
-    // @JoinColumn()
-    // photo: Photo;
-    //
-    // @ManyToMany(() => Group, groups => groups.groups)
-    // @JoinTable()
-    // groups: Group[];
 
 }

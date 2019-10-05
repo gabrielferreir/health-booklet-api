@@ -22,11 +22,13 @@ export default class VaccineController {
         try {
             const params = {
                 name: req.body.name,
+                dose: req.body.dose,
                 description: req.body.description,
-                period: req.body.period,
+                daysMin: req.body.daysMin,
+                daysMax: req.body.daysMax
             };
             const vaccineRepository = new VaccineRepository();
-            const user = new Vaccine(null, params.name, params.description, params.period);
+            const user = new Vaccine(null, params.name, params.dose, params.description, params.daysMin, params.daysMax);
             await vaccineRepository.create(user);
             return res.status(201).jsonp(user);
         } catch (e) {
@@ -60,13 +62,15 @@ export default class VaccineController {
             const params = {
                 id: req.params.id,
                 name: req.body.name,
+                dose: req.body.dose,
                 description: req.body.description,
-                period: req.body.period
+                daysMin: req.body.daysMin,
+                daysMax: req.body.daysMax
             };
 
             const vaccineRepository = new VaccineRepository();
 
-            const user = new Vaccine(params.id, params.name, params.description, params.period);
+            const user = new Vaccine(params.id, params.name, params.dose, params.description, params.daysMin, params.daysMax);
 
             const response = await vaccineRepository.updade(user);
 

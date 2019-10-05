@@ -3,6 +3,8 @@ import UserController from './controller/user';
 import VaccineController from "./controller/vaccine";
 import CampaignController from "./controller/campaign";
 import BookletController from "./controller/booklet";
+import PersonController from "./controller/person";
+import PersonBookletController from "./controller/personBooklet";
 
 const app = new App(
     [
@@ -10,6 +12,8 @@ const app = new App(
         new VaccineController(),
         new CampaignController(),
         new BookletController(),
+        new PersonController(),
+        new PersonBookletController()
     ],
     5000,
 );
