@@ -33,15 +33,22 @@ export default class PersonBookletRepository {
         const personVaccineRepository = new PersonVaccineRepository();
 
         const personVaccine = await Promise.all(booklet.vaccines.map(async item => {
-            const personVaccine = new PersonVaccine(null, item, 1, 30, false)
+            const minDate = this.addData(item.daysMin);
+            const maxDate = this.addData(item.daysMax);
+            const personVaccine = new PersonVaccine(null, item, minDate, maxDate, false);
             return await personVaccineRepository.create(personVaccine);
         }));
 
-
         const personBooklet = new PersonBooklet(null, person, booklet, personVaccine);
-
-        // console.log('personBooklet', personVaccine);
 
         return await getManager().getRepository(PersonBooklet).save(personBooklet);
     }
+
+    private addData(days) {
+        const now = new Date();
+        now.setHours(0, 0, 0, 0);
+        now.setDate(now.getDate() + days);
+        return now;
+    }
 }
+
