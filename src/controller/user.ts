@@ -32,15 +32,13 @@ export default class UserController {
                     .update(`${ENV.SECRET_KEY}-${req.body.pass}`)
                     .digest('hex'),
                 birthday: req.body.birthday,
-                isMale: req.body.isMale,
-                isGravid: req.body.isGravid,
-                publicAgent: req.body.publicAgent
+                isMale: req.body.isMale
             };
             const userRepository = new UserRepository();
 
             await userRepository.availableEmail(params.email);
 
-            const user = new User(null, params.firstName, params.lastName, params.email, params.pass, params.birthday, params.isMale, params.isGravid, params.publicAgent);
+            const user = new User(null, params.firstName, params.lastName, params.email, params.pass, params.birthday, params.isMale);
             await userRepository.create(user);
 
             return res.status(201).jsonp(user);
@@ -78,16 +76,14 @@ export default class UserController {
                 email: req.body.email,
                 pass: req.body.pass,
                 birthday: req.body.birthday,
-                isMale: req.body.isMale,
-                isGravid: req.body.isGravid,
-                publicAgent: req.body.publicAgent
+                isMale: req.body.isMale
             };
 
             const userRepository = new UserRepository();
 
             await userRepository.availableEmail(params.email);
 
-            const user = new User(null, params.firstName, params.lastName, params.email, params.pass, params.birthday, params.isMale, params.isGravid, params.publicAgent);
+            const user = new User(null, params.firstName, params.lastName, params.email, params.pass, params.birthday, params.isMale);
 
             const response = await userRepository.updade(user);
 

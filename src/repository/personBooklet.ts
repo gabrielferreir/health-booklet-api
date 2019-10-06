@@ -1,20 +1,36 @@
-import {getManager} from "typeorm";
+import {getConnection, getManager} from "typeorm";
 import {PersonBooklet} from "../entity/PersonBooklet";
 import {Person} from "../entity/Person";
 import {Booklet} from "../entity/Booklet";
 import {PersonVaccine} from "../entity/PersonVaccine";
 import PersonVaccineRepository from "./personVaccine";
 import * as moment from 'moment';
+import {User} from "../entity/User";
 
 export default class PersonBookletRepository {
 
-    async read(person: Person): Promise<Array<PersonBooklet>> {
-        return await getManager().getRepository(PersonBooklet).find({
-            where: {
-                person: person
-            },
-            relations: ['booklet']
-        });
+    async read(idUser: number) {
+
+        const res = getConnection()
+            .createQueryBuilder()
+            .select("PB.id AS id, P.name AS namePerson, B.name AS nameBooklet")
+            .from(PersonBooklet, "PB")
+            .leftJoin(Person, 'P', 'PB.personId = P.id')
+            .leftJoin(Booklet, 'B', 'PB.bookletId = B.id')
+            .leftJoin(User, 'U', 'P.userId = U.id')
+            .where('U.id = :idUser', {idUser})
+            .execute();
+
+        console.log(res);
+        return res;
+        // .where("user.id = :id", { id: 1 })
+
+        // return await getManager().getRepository(PersonBooklet).find({
+        //     where: {
+        //         person: person,
+        //     },
+        //     relations: ['booklet', 'person']
+        // });
     }
 
     async readOne(id: number): Promise<PersonBooklet> {
@@ -22,7 +38,7 @@ export default class PersonBookletRepository {
             where: {
                 id: id
             },
-            relations: ['vaccines', 'booklet']
+            relations: ['vaccines', 'booklet', 'person']
         });
     }
 

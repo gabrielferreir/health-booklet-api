@@ -3,7 +3,7 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, JoinColumn
 @Entity()
 export class User {
 
-    constructor(id, firstName, lastName, email, pass, birthday, isMale, isGravid, publicAgent) {
+    constructor(id, firstName, lastName, email, pass, birthday, isMale) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -11,12 +11,10 @@ export class User {
         this.pass = pass;
         this.birthday = birthday;
         this.isMale = isMale;
-        this.isGravid = isGravid;
-        this.publicAgent = publicAgent;
     }
 
     static byId(id) {
-        return new User(id, null, null, null, null, null, null, null, null);
+        return new User(id, null, null, null, null, null, null);
     }
 
     @PrimaryGeneratedColumn()
@@ -39,11 +37,5 @@ export class User {
 
     @Column()
     isMale: boolean;
-
-    @Column()
-    isGravid: boolean;
-
-    @Column()
-    publicAgent: boolean;
 
 }

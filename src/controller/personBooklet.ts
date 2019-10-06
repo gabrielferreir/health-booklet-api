@@ -3,6 +3,7 @@ import PersonBookletRepository from "../repository/personBooklet";
 import BookletRepository from "../repository/booklet";
 import PersonRepository from "../repository/person";
 import {Person} from "../entity/Person";
+import auth from '../middleware/auth'
 
 export default class PersonBookletController {
     public path = '/person-booklet';
@@ -13,17 +14,15 @@ export default class PersonBookletController {
     }
 
     public intializeRoutes() {
-        this.router.get(`${this.path}-list/:idPerson`, this.read);
-        this.router.get(`${this.path}/:idPersonBooklet`, this.readOne);
-        this.router.post(`${this.path}`, this.create);
+        this.router.get(`${this.path}-list`, auth, this.read);
+        this.router.get(`${this.path}/:idPersonBooklet`, auth, this.readOne);
+        this.router.post(`${this.path}`, auth, this.create);
     }
 
     async read(req, res, next) {
         try {
-            const id = req.params.idPerson;
             const repository = new PersonBookletRepository();
-            const person = Person.byId(id);
-            const response = await repository.read(person);
+            const response = await repository.read(req.idUser);
             res.status(200).jsonp(response);
         } catch (e) {
             next(e);
