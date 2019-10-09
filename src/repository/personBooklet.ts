@@ -34,12 +34,20 @@ export default class PersonBookletRepository {
     }
 
     async readOne(id: number): Promise<PersonBooklet> {
-        return await getManager().getRepository(PersonBooklet).findOne({
+        let personBooklet = await getManager().getRepository(PersonBooklet).findOne({
             where: {
-                id: id
+                id: id,
             },
-            relations: ['vaccines', 'booklet', 'person']
+            relations: ['vaccines', 'vaccines.vaccine', 'booklet', 'person']
         });
+
+        personBooklet.vaccines = personBooklet.vaccines.sort((a, b) => {
+            if (a.minDate > b.minDate) return 1;
+            if (a.minDate < b.minDate) return -1;
+            return 0;
+        });
+
+        return personBooklet;
     }
 
     async create(person: Person, booklet: Booklet) {
