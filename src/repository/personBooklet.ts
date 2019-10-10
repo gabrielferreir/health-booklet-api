@@ -20,17 +20,7 @@ export default class PersonBookletRepository {
             .leftJoin(User, 'U', 'P.userId = U.id')
             .where('U.id = :idUser', {idUser})
             .execute();
-
-        console.log(res);
         return res;
-        // .where("user.id = :id", { id: 1 })
-
-        // return await getManager().getRepository(PersonBooklet).find({
-        //     where: {
-        //         person: person,
-        //     },
-        //     relations: ['booklet', 'person']
-        // });
     }
 
     async readOne(id: number): Promise<PersonBooklet> {
@@ -63,6 +53,15 @@ export default class PersonBookletRepository {
         const personBooklet = new PersonBooklet(null, person, booklet, personVaccine);
 
         return await getManager().getRepository(PersonBooklet).save(personBooklet);
+    }
+
+    async isOkay(idVaccine: number, isOkay: boolean) {
+        return await getConnection()
+            .createQueryBuilder()
+            .update(PersonVaccine)
+            .set({isOkay: isOkay})
+            .where("id = :idVaccine", {idVaccine})
+            .execute();
     }
 
     private addData(days) {

@@ -2,7 +2,6 @@ import * as express from 'express';
 import PersonBookletRepository from "../repository/personBooklet";
 import BookletRepository from "../repository/booklet";
 import PersonRepository from "../repository/person";
-import {Person} from "../entity/Person";
 import auth from '../middleware/auth'
 
 export default class PersonBookletController {
@@ -17,6 +16,7 @@ export default class PersonBookletController {
         this.router.get(`${this.path}-list`, auth, this.read);
         this.router.get(`${this.path}/:idPersonBooklet`, auth, this.readOne);
         this.router.post(`${this.path}`, auth, this.create);
+        this.router.put(`${this.path}/vaccine/:idVaccine`, auth, this.isOkay);
     }
 
     async read(req, res, next) {
@@ -55,6 +55,23 @@ export default class PersonBookletController {
 
             const personBookletRepository = new PersonBookletRepository();
             const personBooklet = await personBookletRepository.create(person, booklet);
+
+            res.status(200).jsonp(personBooklet);
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async isOkay(req, res, next) {
+        try {
+            const params = {
+                idVaccine: req.params.idVaccine,
+                value: req.body.value,
+            };
+
+            const personBookletRepository = new PersonBookletRepository();
+            const personBooklet = await personBookletRepository.isOkay(params.idVaccine, params.value);
 
             res.status(200).jsonp(personBooklet);
 
