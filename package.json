@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "ts-node src/server.ts",
-    "start-prod": "SET NODE_ENV=production&&ts-node src/server.ts",
+    "start-prod": "ts-node src/server.ts",
     "nodemon": "nodemon"
   }
 }
