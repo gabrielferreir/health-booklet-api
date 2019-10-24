@@ -4,6 +4,7 @@ import UserRepository from "../repository/user";
 import * as crypto from "crypto";
 import ENV from "../config";
 import * as jwt from 'jsonwebtoken';
+import auth from '../middleware/auth';
 
 export default class UserController {
     public path = '/user';
@@ -17,9 +18,9 @@ export default class UserController {
         this.router.post(this.path, this.create);
         this.router.get(this.path, this.read);
         this.router.post(`${this.path}/login`, this.signIn);
-        this.router.get(`${this.path}/:id`, this.readOne);
-        this.router.put(`${this.path}/:id`, this.update);
-        this.router.delete(`${this.path}/:id`, this.delete);
+        this.router.get(`${this.path}/my`, auth, this.readOne);
+        this.router.put(`${this.path}`, auth, this.update);
+        this.router.delete(`${this.path}`, auth, this.delete);
     }
 
     async create(req, res, next) {
@@ -60,8 +61,8 @@ export default class UserController {
     async readOne(req, res, next) {
         try {
             const repository = new UserRepository();
-            const response = await repository.readOne(req.params.id);
-            res.status(200).json(response[0]);
+            const response = await repository.readOne(req.idUser);
+            res.status(200).json(response);
         } catch (e) {
             next(e);
         }

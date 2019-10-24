@@ -1,5 +1,6 @@
 import {getManager} from "typeorm";
 import {User} from "../entity/User";
+import {Person} from "../entity/Person";
 
 export default class UserRepository {
 
@@ -8,11 +9,24 @@ export default class UserRepository {
     }
 
     async read(): Promise<Array<User>> {
-        return await getManager().getRepository(User).find();
+        return await getManager().getRepository(User).find(
+            {
+                relations: ['persons']
+            }
+        );
     }
 
-    async readOne(id: any): Promise<Array<User>> {
-        return await getManager().getRepository(User).findByIds(id);
+    async readOne(id: any): Promise<User> {
+        console.log(id);
+
+        const user = await getManager().getRepository(User).findOne({
+            where: {
+                id: id
+            },
+            relations: ['persons']
+        });
+
+        return user;
     }
 
     async updade(user: User) {

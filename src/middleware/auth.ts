@@ -7,7 +7,7 @@ const verifyJWT = (req, res, next) => {
     if (!token) return res.status(401).send({message: 'Autenticação é requerida'});
 
     jwt.verify(token, ENV.SECRET_KEY, (err, decoded) => {
-        if (err) return res.status(500).send({message: 'Token invalido'});
+        if (err) return res.status(400).send({message: 'Token invalido'});
 
         req.idUser = decoded.id;
         next();

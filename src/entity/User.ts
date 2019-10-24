@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, JoinColumn, JoinTable} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, JoinColumn, JoinTable, OneToMany} from "typeorm";
+import {Person} from "./Person";
 
 @Entity()
 export class User {
@@ -37,5 +38,8 @@ export class User {
 
     @Column()
     isMale: boolean;
+
+    @OneToMany(type => Person, person => person.user)
+    persons: Person[];
 
 }
