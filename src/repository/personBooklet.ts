@@ -44,8 +44,8 @@ export default class PersonBookletRepository {
         const personVaccineRepository = new PersonVaccineRepository();
 
         const personVaccine = await Promise.all(booklet.vaccines.map(async item => {
-            const minDate = this.addData(item.daysMin);
-            const maxDate = this.addData(item.daysMax);
+            const minDate = this.addData(person.birthday, item.daysMin);
+            const maxDate = this.addData(person.birthday, item.daysMax);
             const personVaccine = new PersonVaccine(null, item, minDate, maxDate, false);
             return await personVaccineRepository.create(personVaccine);
         }));
@@ -64,8 +64,8 @@ export default class PersonBookletRepository {
             .execute();
     }
 
-    private addData(days) {
-        const date = moment().utc(false);
+    private addData(birth, days) {
+        const date = moment(birth).utc(false);
         date.add(days, 'days');
         return date.format('YYYY-MM-DD');
     }
