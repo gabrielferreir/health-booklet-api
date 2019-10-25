@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm"
 import {User} from "./User";
+import {PersonBooklet} from "./PersonBooklet";
 
 @Entity()
 export class Person {
@@ -30,5 +31,8 @@ export class Person {
 
     @Column()
     isMale: boolean;
+
+    @OneToMany(type => PersonBooklet, personBooklet => personBooklet.person, {onDelete: 'CASCADE'})
+    personBooklet: PersonBooklet[];
 
 }

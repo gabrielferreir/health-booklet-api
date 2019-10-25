@@ -19,7 +19,7 @@ export class PersonBooklet {
     @ManyToOne(type => Booklet, booklet => booklet.id)
     booklet: Booklet;
 
-    @ManyToOne(type => Person, person => person.id)
+    @ManyToOne(type => Person, person => person.id, {onDelete: 'CASCADE'})
     person: Person;
 
     @ManyToMany(vaccine => PersonVaccine)
