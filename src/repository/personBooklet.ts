@@ -69,5 +69,9 @@ export default class PersonBookletRepository {
         date.add(days, 'days');
         return date.format('YYYY-MM-DD');
     }
+
+    async delete(idBooklet) {
+        return await getManager().getRepository(PersonBooklet).delete({id: idBooklet});
+    }
 }
 

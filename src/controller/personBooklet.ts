@@ -16,6 +16,7 @@ export default class PersonBookletController {
         this.router.get(`${this.path}-list`, auth, this.read);
         this.router.get(`${this.path}/:idPersonBooklet`, auth, this.readOne);
         this.router.post(`${this.path}`, auth, this.create);
+        this.router.delete(`${this.path}/:id`, auth, this.delete);
         this.router.put(`${this.path}/vaccine/:idVaccine`, auth, this.isOkay);
     }
 
@@ -74,6 +75,20 @@ export default class PersonBookletController {
             const personBooklet = await personBookletRepository.isOkay(params.idVaccine, params.value);
 
             res.status(200).jsonp(personBooklet);
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async delete(req, res, next) {
+        try {
+            const id = req.params.id;
+
+            const personBookletRepository = new PersonBookletRepository();
+            await personBookletRepository.delete(id);
+
+            res.status(200).jsonp({message: 'Removido com sucesso'});
 
         } catch (e) {
             next(e);
