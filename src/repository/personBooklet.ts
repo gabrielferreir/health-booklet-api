@@ -10,8 +10,7 @@ import {User} from "../entity/User";
 export default class PersonBookletRepository {
 
     async read(idUser: number) {
-
-        const res = getConnection()
+        return getConnection()
             .createQueryBuilder()
             .select("PB.id AS id, P.name AS namePerson, B.name AS nameBooklet")
             .from(PersonBooklet, "PB")
@@ -20,7 +19,6 @@ export default class PersonBookletRepository {
             .leftJoin(User, 'U', 'P.userId = U.id')
             .where('U.id = :idUser', {idUser})
             .execute();
-        return res;
     }
 
     async readOne(id: number): Promise<PersonBooklet> {
@@ -72,6 +70,41 @@ export default class PersonBookletRepository {
 
     async delete(idBooklet) {
         return await getManager().getRepository(PersonBooklet).delete({id: idBooklet});
+    }
+
+    async percentageBooks(idUser: number) {
+        return getManager().query('SELECT pb.id, ' +
+            'pb.personId, ' +
+            'p2.name, ' +
+            'b.name, ' +
+            '(SELECT COUNT(*) ' +
+            'FROM person_booklet_vaccines_person_vaccine pbvpv ' +
+            'LEFT JOIN person_vaccine pv on pbvpv.personVaccineId = pv.id ' +
+            'WHERE pbvpv.personBookletId = pb.id) as total, ' +
+            '(SELECT COUNT(*) ' +
+            'FROM person_booklet_vaccines_person_vaccine pbvpv ' +
+            'LEFT JOIN person_vaccine pv on pbvpv.personVaccineId = pv.id ' +
+            'WHERE pbvpv.personBookletId = pb.id ' +
+            'AND pv.isOkay IS TRUE) as taken ' +
+            'FROM person_booklet pb ' +
+            'INNER JOIN person p2 on pb.personId = p2.id ' +
+            'INNER JOIN booklet b on pb.bookletId = b.id ' +
+            `WHERE personId IN (SELECT p.id FROM person p WHERE userId = ${idUser}) ` +
+            'GROUP BY pb.bookletId;')
+    }
+
+    async nextVaccines(idUser: number) {
+        return getManager().query('SELECT pv.id, pv.minDate, pv.maxDate, p2.name AS person, v.name as vaccine ' +
+            'FROM person_booklet_vaccines_person_vaccine pbvpv ' +
+            'LEFT JOIN person_vaccine pv on pbvpv.personVaccineId = pv.id ' +
+            'LEFT JOIN person_booklet pb on pbvpv.personBookletId = pb.id ' +
+            'LEFT JOIN person p2 on pb.personId = p2.id ' +
+            'LEFT JOIN vaccine v ON v.id = pv.vaccineId ' +
+            `WHERE pb.personId IN (SELECT p.id FROM person p WHERE userId = ${idUser}) ` +
+            'AND pv.minDate > CURRENT_TIMESTAMP ' +
+            'AND pv.isOkay IS FALSE ' +
+            'ORDER BY pv.minDate ASC ' +
+            'LIMIT 5;')
     }
 }
 

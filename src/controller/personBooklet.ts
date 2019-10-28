@@ -14,6 +14,8 @@ export default class PersonBookletController {
 
     public intializeRoutes() {
         this.router.get(`${this.path}-list`, auth, this.read);
+        this.router.get(`${this.path}/percentage`, auth, this.percentageBooks);
+        this.router.get(`${this.path}/next-vaccines`, auth, this.nextVaccines);
         this.router.get(`${this.path}/:idPersonBooklet`, auth, this.readOne);
         this.router.post(`${this.path}`, auth, this.create);
         this.router.delete(`${this.path}/:id`, auth, this.delete);
@@ -90,6 +92,26 @@ export default class PersonBookletController {
 
             res.status(200).jsonp({message: 'Removido com sucesso'});
 
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async percentageBooks(req, res, next) {
+        try {
+            const repository = new PersonBookletRepository();
+            const response = await repository.percentageBooks(req.idUser);
+            res.status(200).jsonp(response[0]);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async nextVaccines(req, res, next) {
+        try {
+            const repository = new PersonBookletRepository();
+            const response = await repository.nextVaccines(req.idUser);
+            res.status(200).jsonp(response);
         } catch (e) {
             next(e);
         }
