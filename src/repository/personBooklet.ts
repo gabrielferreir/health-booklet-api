@@ -75,8 +75,8 @@ export default class PersonBookletRepository {
     async percentageBooks(idUser: number) {
         return getManager().query('SELECT pb.id, ' +
             'pb.personId, ' +
-            'p2.name, ' +
-            'b.name, ' +
+            'p2.name as person, ' +
+            'b.name as booklet, ' +
             '(SELECT COUNT(*) ' +
             'FROM person_booklet_vaccines_person_vaccine pbvpv ' +
             'LEFT JOIN person_vaccine pv on pbvpv.personVaccineId = pv.id ' +

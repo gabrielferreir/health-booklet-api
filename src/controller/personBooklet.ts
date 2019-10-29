@@ -101,7 +101,7 @@ export default class PersonBookletController {
         try {
             const repository = new PersonBookletRepository();
             const response = await repository.percentageBooks(req.idUser);
-            res.status(200).jsonp(response[0]);
+            res.status(200).jsonp(response);
         } catch (e) {
             next(e);
         }
