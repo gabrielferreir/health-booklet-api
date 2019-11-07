@@ -5,7 +5,10 @@ import {Person} from "../entity/Person";
 export default class UserRepository {
 
     async create(user: User): Promise<User> {
-        return await getManager().getRepository(User).save(user);
+        const resultUser = await getManager().getRepository(User).save(user);
+        const person = new Person(null, resultUser, 'Eu', resultUser.birthday, resultUser.isMale);
+        await getManager().getRepository(Person).save(person);
+        return resultUser
     }
 
     async read(): Promise<Array<User>> {

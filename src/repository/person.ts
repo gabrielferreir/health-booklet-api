@@ -8,6 +8,8 @@ export default class PersonRepository {
         return await getManager().getRepository(Person).save(person);
     }
 
+
+
     async read(user): Promise<Array<Person>> {
         return await getManager().getRepository(Person).find(
             {
